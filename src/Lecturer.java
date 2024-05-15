@@ -15,6 +15,7 @@ public class Lecturer {
     private JComboBox<String> comboBox1;
     private JButton addButton;
     private JPanel Main;
+    private JButton editButton;
 
     Connection con;
     PreparedStatement pst;
@@ -24,7 +25,6 @@ public class Lecturer {
 
     public Lecturer() {
         connect();
-        table_load();
 
         // Define the fields to populate in the comboBox1
         String[] displayFields = {"Student", "Student Grade", "IT Supports", "Question", "Examination", "View Examination"};
@@ -54,6 +54,23 @@ public class Lecturer {
                 String displayValue = (String) comboBox1.getSelectedItem();
                 String tableName = tableMap.get(displayValue);
                 searchInTable(tableName, searchTerm);
+            }
+        });
+
+        // Add action listener for the add button
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addStudent addForm = new addStudent(Lecturer.this);
+                addForm.setContentPane(addForm.Main);
+                addForm.setVisible(true);
+            }
+        });
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table1.getSelectedRow();
+                System.out.println(STR."Selected row index: \{selectedRow}");
             }
         });
     }
