@@ -1,3 +1,4 @@
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class Lecturer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table1.getSelectedRow();
-                System.out.println(STR."Selected row index: \{selectedRow}");
+                System.out.println("Selected row index:" + selectedRow);
             }
         });
     }
@@ -88,12 +89,19 @@ public class Lecturer {
     }
 
     public void connect() {
+        SQLServerDataSource ds = new SQLServerDataSource();
+        ds.setUser("sa");
+        ds.setPassword("123456");
+        ds.setServerName("DESKTOP-EJIGPN3\\SQLEXPRESS");
+        ds.setPortNumber(1433);
+        ds.setDatabaseName("OnlineExaminationSystem");
+        ds.setEncrypt(false);
+
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/pdmproject", "root", "21082002");
-            System.out.println("Connected Successfully");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            con = ds.getConnection();
+            System.out.println("Connection successful");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

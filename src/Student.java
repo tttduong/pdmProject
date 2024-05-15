@@ -1,3 +1,5 @@
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
@@ -15,8 +17,8 @@ public class Student {
     private JButton searchButton;
     private JTextField textField1;
 
-    Connection con;
-    PreparedStatement pst;
+    private Connection con;
+    private PreparedStatement pst;
 
     // Map to hold display names and corresponding table names
     private final Map<String, String> tableMap = new HashMap<>();
@@ -68,14 +70,28 @@ public class Student {
         frame.pack();
         frame.setVisible(true);
     }
+    public void setVisible() {
+        JFrame frame = new JFrame("Student");
+        frame.setContentPane(new Student().getMainPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
     public void connect() {
+        SQLServerDataSource ds = new SQLServerDataSource();
+        ds.setUser("sa");
+        ds.setPassword("123456");
+        ds.setServerName("DESKTOP-EJIGPN3\\SQLEXPRESS");
+        ds.setPortNumber(1433);
+        ds.setDatabaseName("OnlineExaminationSystem");
+        ds.setEncrypt(false);
+
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/pdmproject", "root", "21082002");
-            System.out.println("Connected Successfully");
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            con = ds.getConnection();
+            System.out.println("Connection successful");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,8 +100,8 @@ public class Student {
             pst = con.prepareStatement("SELECT * FROM student");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -94,8 +110,8 @@ public class Student {
             pst = con.prepareStatement("SELECT * FROM " + tableName);
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -123,13 +139,13 @@ public class Student {
             columns.beforeFirst();
             int index = 1;
             while (columns.next()) {
-                pst.setString(index++, STR."%\{searchTerm}%");
+                pst.setString(index++, "%" + searchTerm + "%");
             }
 
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
