@@ -7,13 +7,14 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Student {
-    private JPanel Main;
-    private JTable table1;
+public class Lecturer {
     private JButton signOutButton;
-    private JComboBox<String> comboBox1;
-    private JButton searchButton;
+    private JTable table1;
     private JTextField textField1;
+    private JButton searchButton;
+    private JComboBox<String> comboBox1;
+    private JButton addButton;
+    private JPanel Main;
 
     Connection con;
     PreparedStatement pst;
@@ -21,13 +22,13 @@ public class Student {
     // Map to hold display names and corresponding table names
     private final Map<String, String> tableMap = new HashMap<>();
 
-    public Student() {
+    public Lecturer() {
         connect();
         table_load();
 
         // Define the fields to populate in the comboBox1
-        String[] displayFields = {"Examination", "Student Grade", "IT Supports"};
-        String[] tableNames = {"examination", "grade_student", "it_support"};
+        String[] displayFields = {"Student", "Student Grade", "IT Supports", "Question", "Examination", "View Examination"};
+        String[] tableNames = {"student", "grade_student", "it_support", "question", "examination", "view_examination"};
 
         // Populate the map
         for (int i = 0; i < displayFields.length; i++) {
@@ -62,8 +63,8 @@ public class Student {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Student");
-        frame.setContentPane(new Student().getMainPanel());
+        JFrame frame = new JFrame("Lecturer");
+        frame.setContentPane(new Lecturer().getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -81,7 +82,7 @@ public class Student {
 
     void table_load() {
         try {
-            pst = con.prepareStatement("SELECT * FROM student");
+            pst = con.prepareStatement("SELECT * FROM lecturer");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (SQLException throwables) {
@@ -123,7 +124,7 @@ public class Student {
             columns.beforeFirst();
             int index = 1;
             while (columns.next()) {
-                pst.setString(index++, STR."%\{searchTerm}%");
+                pst.setString(index++, "%" + searchTerm + "%");
             }
 
             ResultSet rs = pst.executeQuery();
