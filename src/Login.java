@@ -10,6 +10,8 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  *
@@ -108,7 +110,7 @@ public class Login extends JFrame {
         jTextField1 = new  RoundedTextField(20);
         jTextField2 = new RoundedTextField(20);
         jButton1 = new JButton();
-        jLabel3 = new JLabel();
+        jLabel3 = new JLabel("",SwingConstants.CENTER);
         jLabel4 = new JLabel();
         jLabel5 = new JLabel();
         jPanel1 = new RoundedPanel(40);
@@ -192,42 +194,25 @@ public class Login extends JFrame {
                         .addGap(0, 360, Short.MAX_VALUE)
         );
 
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(590, 590, 590) //login - horizontal
-                                                .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(jLabel3, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(75, 75, 75))
-//
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(436, 436, 436)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jLabel2)
-                                                        .addComponent(jLabel1))
-                                                .addGap(27, 27, 27)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap(275, Short.MAX_VALUE))
-                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(307, Short.MAX_VALUE)
-                                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(307, Short.MAX_VALUE))
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addContainerGap(268, Short.MAX_VALUE)
-                                        .addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 629, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(300, 300, 300))
-                                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(600, 600, 600)))
 
+// Horizontal layout
+        layout.setHorizontalGroup(
+
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER) // Center horizontally
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 629, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)

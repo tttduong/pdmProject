@@ -27,7 +27,7 @@ public class Student extends JFrame{
         table_load();
 
         // Define the fields to populate in the comboBox1
-        String[] displayFields = {"Examination", "Student Grade", "IT Supports"};
+        String[] displayFields = { "Examination", "Student Grade", "IT Supports"};
         String[] tableNames = {"examination", "grade_student", "it_support"};
 
         // Populate the map
