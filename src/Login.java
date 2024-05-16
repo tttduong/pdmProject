@@ -5,29 +5,150 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
 
 /**
  *
  * @author Administrator
  */
 public class Login extends JFrame {
+    private Connection con;
+    private static final String JDBC_URL = "jdbc:sqlserver://DESKTOP-EJIGPN3\\SQLEXPRESS;databaseName=OnlineExaminationSystem";
+    private static final String JDBC_USER = "as";
+    private static final String JDBC_PASSWORD = "123456";
+
+    private static final String userID_2 = "ITCSIU21241";
+    private static final String password_2 = "1234";
+    private static final String userID_3 = "ITL21241";
+    private static final String password_3 = "1234";
+
+
 
     /** Creates new form Login */
     public Login() {
+        connect();
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
 
-    public void inputID(java.awt.event.ActionEvent evt){}
-    public void inputPassword(java.awt.event.ActionEvent evt){}
-    public void login (java.awt.event.ActionEvent evt){
+    public void inputID(java.awt.event.ActionEvent evt){
+        String userID = jTextField1.getText();
+        System.out.println("User ID entered: " + userID);
+    }
+    public void inputPassword(java.awt.event.ActionEvent evt){
+//        char[] password = jTextField2.getPassword();
+//        System.out.println("Password entered: " + new String(password));
+//
+    }
+    public void loginActionPerformed(java.awt.event.ActionEvent evt){
         setVisible(false);
-        Student object = new Student();
-        object.setVisible();
+        String userID = jTextField1.getText();
+        String password = jTextField2.getText();
+
+        if(userID.equalsIgnoreCase(userID_2) && password.equals(password_2)) {
+
+            Student object = new Student();
+            object.initComponents();
+            object.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Login successful!");
+        } else if(userID.equals(userID_3) && password.equals(password_3)) {
+            Lecturer object = new Lecturer();
+//            object.initComponents();
+            object.initComponents();
+            JOptionPane.showMessageDialog(this, "Login successful!");
+        }
+//
+//         Thực hiện xác thực tài khoản ở đây
+//        if (authenticate(userID, password)) {
+//            JOptionPane.showMessageDialog(this, "Login successful!");
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Invalid user ID or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+//        }
+
+//        Student object = new Student();
+//        object.initComponents();
 //        object.setVisible(true);
+    }
+    private boolean authenticate(String userID, String password) {
+
+        // Kiểm tra trong bảng LECTURER
+        if (checkUserInLecturer(userID, password)) {
+            return true;
+        }
+        // Kiểm tra trong bảng STUDENT
+        if (checkUserInStudent(userID, password)) {
+            return true;
+        }
+        return false;
+
+//        // Giả sử xác thực đơn giản
+//        String validUserID = "admin";
+//        String validPassword = "password123";
+//
+//        return userID.equals(validUserID) && new String(password).equals(validPassword);
+    }
+
+    private boolean checkUserInLecturer(String lecturerID, String password) {
+        String query = "SELECT COUNT(*) FROM LECTURER WHERE Lecturer_ID = ?";
+//        String query = "SELECT COUNT(*) FROM LECTURER WHERE Lecturer_ID = ? AND LecturerPassword = ?";
+//        return checkUser(query, lecturerID, password);
+        if (password == "123456"){
+            return checkUser(query, lecturerID);
+        }
+        return false;
+    }
+
+    private boolean checkUserInStudent(String studentID, String password) {
+        String query = "SELECT COUNT(*) FROM STUDENT WHERE Student_ID = ?";
+//        String query = "SELECT COUNT(*) FROM STUDENT WHERE Student_ID = ? AND StudentPassword = ?";
+//        return checkUser(query, studentID, password);
+        if (password == "123456"){
+            return checkUser(query, studentID);
+        }
+        return false;
+    }
+
+//    private boolean checkUser(String query, String userID, String password) {
+        private boolean checkUser(String query, String userID) {
+
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, userID);
+//            pstmt.setString(2, password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public void connect() {
+        SQLServerDataSource ds = new SQLServerDataSource();
+        ds.setUser("sa");
+        ds.setPassword("123456");
+        ds.setServerName("DESKTOP-EJIGPN3\\SQLEXPRESS");
+        ds.setPortNumber(1433);
+        ds.setDatabaseName("OnlineExaminationSystem");
+        ds.setEncrypt(false);
+
+        try {
+            con = ds.getConnection();
+            System.out.println("Connection successful");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /** This method is called from within the constructor to
@@ -44,7 +165,7 @@ public class Login extends JFrame {
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();
         jTextField1 = new  RoundedTextField(20);
-        jTextField2 = new RoundedTextField(20) ;
+        jTextField2 = new RoundedTextField(20);
         jButton1 = new JButton();
         jLabel3 = new JLabel();
         jLabel4 = new JLabel();
@@ -95,12 +216,12 @@ public class Login extends JFrame {
 
         jButton1.setBackground(new Color(0, 0, 204));
         jButton1.setForeground(new Color(255, 255, 255));
-        jButton1.setFont(new Font("SF Pro", 1, 15));
+        jButton1.setFont(new Font("SF Pro", 1, 12));
         jButton1.setActionCommand("LOG IN");
         jButton1.setLabel("LOG IN");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login(evt);
+                loginActionPerformed(evt);
             }
         });
 

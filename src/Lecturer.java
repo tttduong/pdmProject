@@ -85,6 +85,16 @@ public class Lecturer {
         frame.setContentPane(new Lecturer().getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+    }
+
+    public void initComponents() {
+        JFrame frame = new JFrame("Lecturer");
+        frame.setContentPane(new Lecturer().getMainPanel());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
 

@@ -1,5 +1,4 @@
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
@@ -9,7 +8,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Student {
+public class Student extends JFrame{
     private JPanel Main;
     private JTable table1;
     private JButton signOutButton;
@@ -56,6 +55,15 @@ public class Student {
                 String tableName = tableMap.get(displayValue);
                 searchInTable(tableName, searchTerm);
             }
+        }
+
+        );
+        // Add action listener for the sign_out button
+        signOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sign_out();
+            }
         });
     }
 
@@ -68,13 +76,15 @@ public class Student {
         frame.setContentPane(new Student().getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
-    public void setVisible() {
+    public void initComponents() {
         JFrame frame = new JFrame("Student");
         frame.setContentPane(new Student().getMainPanel());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
 
@@ -93,6 +103,13 @@ public class Student {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    void sign_out(){
+        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(Main);
+        topFrame.dispose();
+
+        Login lg = new Login();
+        lg.setVisible(true);
     }
 
     void table_load() {

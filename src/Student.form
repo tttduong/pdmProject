@@ -23,7 +23,7 @@
         <properties>
           <background color="-65536"/>
           <font name="Fira Code" style="1"/>
-          <foreground color="-16777216"/>
+          <foreground color="-1"/>
           <text value="Sign out"/>
         </properties>
       </component>
