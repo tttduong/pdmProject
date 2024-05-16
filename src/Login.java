@@ -17,10 +17,6 @@ import java.sql.*;
  */
 public class Login extends JFrame {
     private Connection con;
-    private static final String JDBC_URL = "jdbc:sqlserver://DESKTOP-EJIGPN3\\SQLEXPRESS;databaseName=OnlineExaminationSystem";
-    private static final String JDBC_USER = "as";
-    private static final String JDBC_PASSWORD = "123456";
-
     private static final String userID_2 = "ITCSIU21241";
     private static final String password_2 = "1234";
     private static final String userID_3 = "ITL21241";
@@ -74,64 +70,9 @@ public class Login extends JFrame {
 //        object.initComponents();
 //        object.setVisible(true);
     }
-    private boolean authenticate(String userID, String password) {
 
-        // Kiểm tra trong bảng LECTURER
-        if (checkUserInLecturer(userID, password)) {
-            return true;
-        }
-        // Kiểm tra trong bảng STUDENT
-        if (checkUserInStudent(userID, password)) {
-            return true;
-        }
-        return false;
 
-//        // Giả sử xác thực đơn giản
-//        String validUserID = "admin";
-//        String validPassword = "password123";
-//
-//        return userID.equals(validUserID) && new String(password).equals(validPassword);
-    }
 
-    private boolean checkUserInLecturer(String lecturerID, String password) {
-        String query = "SELECT COUNT(*) FROM LECTURER WHERE Lecturer_ID = ?";
-//        String query = "SELECT COUNT(*) FROM LECTURER WHERE Lecturer_ID = ? AND LecturerPassword = ?";
-//        return checkUser(query, lecturerID, password);
-        if (password == "123456"){
-            return checkUser(query, lecturerID);
-        }
-        return false;
-    }
-
-    private boolean checkUserInStudent(String studentID, String password) {
-        String query = "SELECT COUNT(*) FROM STUDENT WHERE Student_ID = ?";
-//        String query = "SELECT COUNT(*) FROM STUDENT WHERE Student_ID = ? AND StudentPassword = ?";
-//        return checkUser(query, studentID, password);
-        if (password == "123456"){
-            return checkUser(query, studentID);
-        }
-        return false;
-    }
-
-//    private boolean checkUser(String query, String userID, String password) {
-        private boolean checkUser(String query, String userID) {
-
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, userID);
-//            pstmt.setString(2, password);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
 
     public void connect() {
